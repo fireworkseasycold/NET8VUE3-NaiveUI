@@ -1,0 +1,213 @@
+{
+  "version": "1.0.0",
+  "lastUpdated": "20250913-01-02",
+  "constraintLevel": "strict",
+  "schemaVersion": "1.0.0",
+  
+  "technologyStack": {
+    "required": {
+      "backend": {
+        "framework": "ASP.NET Core 8.0",
+        "orm": "SqlSugar 5.x",
+        "authentication": "JWT",
+        "logging": "Serilog",
+        "validation": "FluentValidation",
+        "documentation": "Swagger/OpenAPI"
+      },
+      "frontend": {
+        "framework": "Vue 3.3+",
+        "scripting": "<script setup> with TypeScript",
+        "stateManagement": "Pinia",
+        "uiLibrary": "Naive UI 2.34+",
+        "httpClient": "Axios",
+        "routing": "Vue Router"
+      },
+      "database": {
+        "production": "MySQL 8.0+",
+        "development": "SQLite",
+        "migrationTool": "SqlSugar CodeFirst"
+      },
+      "containerization": {
+        "runtime": "Docker 20.10+",
+        "orchestration": "Docker Compose v2",
+        "multiEnvironmentSupport": true
+      }
+    },
+    "banned": {
+      "backend": ["EntityFramework", "Dapper", "NHibernate", "ADO.NET raw"],
+      "frontend": ["Vuex", "jQuery", "Bootstrap", "Element UI", "Vuetify", "@vue/composition-api"],
+      "patterns": ["拼音命名", "魔法数字", "过长方法 (>50行)", "复杂嵌套"]
+    },
+    "versionConstraints": {
+      "allowedVersions": {
+        "SqlSugar": [">=5.0.0 <6.0.0"],
+        "Vue": [">=3.3.0 <4.0.0"],
+        "NaiveUI": [">=2.34.0 <3.0.0"],
+        "Pinia": [">=2.1.0 <3.0.0"],
+        "Axios": [">=1.4.0 <2.0.0"]
+      },
+      "deprecatedVersions": {
+        "SqlSugar": ["<5.0.0"],
+        "Vue": ["<3.3.0"],
+        "NaiveUI": ["<2.34.0"]
+      }
+    }
+  },
+  
+  "codeQuality": {
+    "namingConventions": {
+      "files": "kebab-case",
+      "classes": "PascalCase", 
+      "variables": "camelCase",
+      "constants": "UPPER_CASE",
+      "interfaces": "I + PascalCase"
+    },
+    "testing": {
+    "coverageTarget": 80,
+    "coreBusinessCoverage": 90,
+    "backendFramework": "xUnit",
+    "frontendFramework": "Vitest",
+    "requiredTestTypes": ["unit", "integration", "edge-case"],
+    "testTemplates": {
+      "boundaryTests": {
+        "required": ["null_inputs", "empty_inputs", "max_length_inputs", "special_characters"],
+        "backendExamples": ["test_null_parameters", "test_empty_collections", "test_max_string_length"],
+        "frontendExamples": ["test_empty_props", "test_invalid_formats", "test_edge_case_values"]
+      },
+      "exceptionTests": {
+        "required": ["database_errors", "network_errors", "validation_errors", "permission_denied"],
+        "backendExamples": ["test_database_connection_failure", "test_invalid_jwt_token", "test_insufficient_permissions"],
+        "frontendExamples": ["test_api_error_handling", "test_network_timeout", "test_component_error_boundary"]
+      },
+      "performanceTests": {
+        "required": ["response_time_metrics", "memory_usage_metrics", "concurrent_requests"],
+        "examples": ["test_response_time_below_threshold", "test_memory_usage_limits", "test_concurrent_user_load"]
+      }
+    }
+  },
+    "documentation": {
+      "fileHeaders": true,
+      "classComments": true,
+      "methodComments": true,
+      "complexLogicComments": true,
+      "apiDocumentation": "OpenAPI 3.0"
+    }
+  },
+  
+  "securityRequirements": {
+    "authentication": "JWT with refresh tokens",
+    "authorization": "Role-based access control",
+    "inputValidation": "FluentValidation + sanitization",
+    "sqlInjection": "Parameterized queries only",
+    "xssProtection": "Content Security Policy",
+    "csrfProtection": "Anti-forgery tokens",
+    "securityHeaders": ["HSTS", "X-Content-Type-Options", "X-Frame-Options"]
+  },
+  
+  "performanceTargets": {
+    "default": {
+      "apiResponseTime": "<100ms (p95)",
+      "pageLoadTime": "<2s (LCP)",
+      "databaseQueryTime": "<50ms",
+      "concurrentUsers": "1000+",
+      "memoryUsage": "<512MB per service"
+    },
+    "byBusinessModule": {
+      "ecommerce": {
+        "orderQueryTime": "<50ms (p99)",
+        "checkoutResponseTime": "<100ms (p95)",
+        "inventoryUpdateTime": "<200ms (p95)",
+        "concurrentCheckouts": "500+"
+      },
+      "ai_saas": {
+        "inferenceResponseTime": "<500ms (p90)",
+        "modelLoadingTime": "<5s (p95)",
+        "batchProcessingTime": "<30s (p95)",
+        "concurrentInferences": "100+"
+      },
+      "industrial_iot": {
+        "deviceDataIngestionTime": "<20ms (p99)",
+        "realTimeAlertTime": "<100ms (p95)",
+        "historicalQueryTime": "<200ms (p95)",
+        "concurrentDevices": "10000+"
+      },
+      "tools_platform": {
+        "apiResponseTime": "<150ms (p95)",
+        "fileProcessingTime": "<1s (p90)",
+        "concurrentOperations": "200+"
+      }
+    }
+  },
+  
+  "outputStructure": {
+    "businessModules": ["ecommerce", "industrial_iot", "ai_saas", "tools_platform"],
+    "backendLayout": {
+      "Controllers": "API endpoints",
+      "Services": "Business logic",
+      "Repositories": "Data access",
+      "Models": "Data models",
+      "DTOs": "Data transfer objects",
+      "Utilities": "Helper classes",
+      "Tests": "Unit tests"
+    },
+    "frontendLayout": {
+      "src/components": "Reusable components",
+      "src/views": "Page components", 
+      "src/stores": "Pinia stores",
+      "src/router": "Vue Router config",
+      "src/api": "API service calls",
+      "src/utils": "Utility functions",
+      "tests": "Component tests"
+    },
+    "moduleDependencies": {
+      "frontendDependencies": {
+        "ecommerce": ["naive-ui", "pinia", "axios"],
+        "ai_saas": ["naive-ui", "pinia", "axios", "chart.js"],
+        "industrial_iot": ["naive-ui", "pinia", "axios", "socket.io-client"],
+        "tools_platform": ["naive-ui", "pinia", "axios", "lodash"]
+      },
+      "backendDependencies": {
+        "ecommerce": ["SqlSugar", "JWT", "Serilog", "FluentValidation"],
+        "ai_saas": ["SqlSugar", "JWT", "Serilog", "FluentValidation", "TensorFlow.NET"],
+        "industrial_iot": ["SqlSugar", "JWT", "Serilog", "FluentValidation", "MQTTnet"],
+        "tools_platform": ["SqlSugar", "JWT", "Serilog", "FluentValidation", "Quartz"]
+      }
+    }
+  },
+  
+  "validationRules": {
+    "syntaxCheck": ["ESLint", "dotnet format", "TypeScript compiler"],
+    "compilation": "Must compile without errors",
+    "functionality": "Core features must work",
+    "testing": "All tests must pass",
+    "security": "No critical vulnerabilities",
+    "performance": "Meet performance targets"
+  },
+  
+  "qualityGates": {
+    "mandatory": ["compilation", "linting", "basic_tests", "security_scan"],
+    "optional": ["performance_tests", "integration_tests", "ui_tests"],
+    "approvalWorkflow": {
+      "manualReview": {
+        "enabled": false,
+        "requiredFor": ["security_critical", "payment_processing", "ai_model_inference", "iot_device_control"],
+        "reviewers": ["senior_developer", "security_lead", "product_owner"]
+      },
+      "autoApproval": {
+        "criteria": {
+          "testCoverage": ">=85%",
+          "securityScore": ">=90",
+          "performanceMetrics": "all_targets_met",
+          "codeComplexity": "<20 cyclomatic_complexity"
+        }
+      }
+    }
+  },
+  
+  "errorHandling": {
+    "technologyDeviation": "auto-correct-with-warning",
+    "qualityNotMet": "regenerate-or-human-review", 
+    "securityIssue": "stop-and-alert",
+    "performanceIssue": "suggest-optimizations"
+  }
+}

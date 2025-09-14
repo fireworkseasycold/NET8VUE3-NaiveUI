@@ -1,0 +1,186 @@
+version: "3.9"
+
+networks:
+  app-network:
+    driver: bridge
+
+# ===================
+# 电商子系统
+# ===================
+services:
+  ecommerce-mysql:
+    image: mysql:8.0
+    container_name: ecommerce-mysql
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: rootpwd
+      MYSQL_DATABASE: ecommerce_db
+      MYSQL_USER: ecommerce_user
+      MYSQL_PASSWORD: ecommerce_pwd
+    ports:
+      - "3307:3306"
+    volumes:
+      - ./volumes/ecommerce/mysql:/var/lib/mysql
+    networks:
+      - app-network
+
+  ecommerce-backend:
+    build:
+      context: ./ecommerce/backend
+    container_name: ecommerce-backend
+    restart: always
+    environment:
+      - ConnectionStrings__DefaultConnection=server=ecommerce-mysql;port=3306;database=ecommerce_db;user=ecommerce_user;password=ecommerce_pwd;
+    ports:
+      - "5001:5000"
+    depends_on:
+      - ecommerce-mysql
+    networks:
+      - app-network
+
+  ecommerce-frontend:
+    build:
+      context: ./ecommerce/frontend
+    container_name: ecommerce-frontend
+    restart: always
+    ports:
+      - "8081:80"
+    depends_on:
+      - ecommerce-backend
+    networks:
+      - app-network
+
+# ===================
+# 工业 IoT 子系统
+# ===================
+  iot-mysql:
+    image: mysql:8.0
+    container_name: iot-mysql
+    restart: always
+    environment:
+    MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+    MYSQL_DATABASE: ${MYSQL_DATABASE}
+    MYSQL_USER: ${MYSQL_USER}
+    MYSQL_PASSWORD: ${MYSQL_PASSWORD}
+    ports:
+      - "3308:3306"
+    volumes:
+      - ./volumes/iot/mysql:/var/lib/mysql
+    networks:
+      - app-network
+
+  iot-backend:
+    build:
+      context: ./industrial_iot/backend
+    container_name: iot-backend
+    restart: always
+    environment:
+      - ConnectionStrings__DefaultConnection=server=iot-mysql;port=3306;database=iot_db;user=iot_user;password=iot_pwd;
+    ports:
+      - "5002:5000"
+    depends_on:
+      - iot-mysql
+    networks:
+      - app-network
+
+  iot-frontend:
+    build:
+      context: ./industrial_iot/frontend
+    container_name: iot-frontend
+    restart: always
+    ports:
+      - "8082:80"
+    depends_on:
+      - iot-backend
+    networks:
+      - app-network
+
+# ===================
+# AI SaaS 子系统
+# ===================
+  ai-mysql:
+    image: mysql:8.0
+    container_name: ai-mysql
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: rootpwd
+      MYSQL_DATABASE: ai_db
+      MYSQL_USER: ai_user
+      MYSQL_PASSWORD: ai_pwd
+    ports:
+      - "3309:3306"
+    volumes:
+      - ./volumes/ai/mysql:/var/lib/mysql
+    networks:
+      - app-network
+
+  ai-backend:
+    build:
+      context: ./ai_saas/backend
+    container_name: ai-backend
+    restart: always
+    environment:
+      - ConnectionStrings__DefaultConnection=server=ai-mysql;port=3306;database=ai_db;user=ai_user;password=ai_pwd;
+    ports:
+      - "5003:5000"
+    depends_on:
+      - ai-mysql
+    networks:
+      - app-network
+
+  ai-frontend:
+    build:
+      context: ./ai_saas/frontend
+    container_name: ai-frontend
+    restart: always
+    ports:
+      - "8083:80"
+    depends_on:
+      - ai-backend
+    networks:
+      - app-network
+
+# ===================
+# 工具平台子系统
+# ===================
+  tools-mysql:
+    image: mysql:8.0
+    container_name: tools-mysql
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: rootpwd
+      MYSQL_DATABASE: tools_db
+      MYSQL_USER: tools_user
+      MYSQL_PASSWORD: tools_pwd
+    ports:
+      - "3310:3306"
+    volumes:
+      - ./volumes/tools/mysql:/var/lib/mysql
+    networks:
+      - app-network
+
+  tools-backend:
+    build:
+      context: ./tools_platform/backend
+    container_name: tools-backend
+    restart: always
+    environment:
+      - ConnectionStrings__DefaultConnection=server=tools-mysql;port=3306;database=tools_db;user=tools_user;password=tools_pwd;
+    ports:
+      - "5004:5000"
+    depends_on:
+      - tools-mysql
+    networks:
+      - app-network
+
+  tools-frontend:
+    build:
+      context: ./tools_platform/frontend
+    container_name: tools-frontend
+    restart: always
+    ports:
+      - "8084:80"
+    depends_on:
+      - tools-backend
+    networks:
+      - app-network

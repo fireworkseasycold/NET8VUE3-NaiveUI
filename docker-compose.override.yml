@@ -1,0 +1,74 @@
+version: "3.9"
+
+services:
+  # ===================
+  # 电商子系统开发
+  # ===================
+  ecommerce-backend:
+    command: dotnet watch run --urls=http://+:5000
+    volumes:
+      - ./ecommerce/backend:/src
+    ports:
+      - "5001:5000"
+
+  ecommerce-frontend:
+    command: npm run dev
+    volumes:
+      - ./ecommerce/frontend:/app
+      - /app/node_modules
+    ports:
+      - "8081:5173"   # Vite dev server 默认 5173
+
+  # ===================
+  # 工业 IoT 子系统开发
+  # ===================
+  iot-backend:
+    command: dotnet watch run --urls=http://+:5000
+    volumes:
+      - ./industrial_iot/backend:/src
+    ports:
+      - "5002:5000"
+
+  iot-frontend:
+    command: npm run dev
+    volumes:
+      - ./industrial_iot/frontend:/app
+      - /app/node_modules
+    ports:
+      - "8082:5173"
+
+  # ===================
+  # AI SaaS 子系统开发
+  # ===================
+  ai-backend:
+    command: dotnet watch run --urls=http://+:5000
+    volumes:
+      - ./ai_saas/backend:/src
+    ports:
+      - "5003:5000"
+
+  ai-frontend:
+    command: npm run dev
+    volumes:
+      - ./ai_saas/frontend:/app
+      - /app/node_modules
+    ports:
+      - "8083:5173"
+
+  # ===================
+  # 工具平台开发
+  # ===================
+  tools-backend:
+    command: dotnet watch run --urls=http://+:5000
+    volumes:
+      - ./tools_platform/backend:/src
+    ports:
+      - "5004:5000"
+
+  tools-frontend:
+    command: npm run dev
+    volumes:
+      - ./tools_platform/frontend:/app
+      - /app/node_modules
+    ports:
+      - "8084:5173"

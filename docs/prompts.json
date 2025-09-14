@@ -1,0 +1,125 @@
+{
+  "name": "Multi-Business Project Generator",
+  "description": "电商、工业 IoT、AI SaaS、工具平台多业务项目生成器，严格遵循技术栈约束和质量标准",
+  "version": "v1.0",
+  "schemaVersion": "1.1",
+  "last_updated": "2024-01-01",
+  "constraint_level": "strict",
+  "technical_stack": {
+    "frontend": ["Vue 3.3+", "Naive UI 2.34+", "TypeScript", "Pinia", "Vite 5.x", "*"],
+    "backend": [".NET 8", "ASP.NET Core Web API", "SqlSugar ORM 5.x", "最小API优先", "*"],
+    "database": ["MySQL 8.0+", "SQLite", "*"],
+    "containerization": ["Docker 20.10+", "Docker Compose v2", "*"]
+  },
+  "quality_standards": {
+    "code_style": {
+      "frontend": "ESLint + Prettier + Airbnb规范",
+      "backend": "dotnet format + EditorConfig + 命名规范"
+    },
+    "test_coverage": 80,
+    "performance_targets": {
+      "api_response": "<100ms",
+      "page_load": "<2s"
+    },
+    "security_requirements": ["OWASP Top 10", "*"]
+  },
+  "prompts": [
+    {
+      "id": "ecommerce-architecture-v1",
+      "business": "ecommerce",
+      "template_type": "架构生成",
+      "module_name": "电商平台总体架构",
+      "input_description": "电商业务完整架构（商品管理、订单处理、支付集成、用户系统、库存管理）",
+      "interface_params": "API端点设计、数据库表结构、微服务划分",
+      "output_path": "/ecommerce/architecture/",
+      "validation_rules": {
+        "required_sections": ["架构图(mermaid)", "模块清单", "API设计", "数据库设计", "Docker配置", "*"],
+        "quality_checks": ["语法检查", "编译验证", "安全扫描", "*"]
+      },
+      "note": "生成完整的电商平台架构，包含前后端分离设计、数据库ER图、API文档和容器化配置"
+    },
+    {
+      "id": "industrial_iot-skeleton-device-v1",
+      "business": "industrial_iot",
+      "template_type": "代码骨架",
+      "module_name": "设备管理模块",
+      "input_description": "工业IoT设备全生命周期管理（设备注册、状态监控、数据采集、告警处理）",
+      "interface_params": "设备实体属性、API接口规范、数据流设计",
+      "output_path": "/industrial_iot/backend/skeleton/",
+      "validation_rules": {
+        "required_components": ["Controller", "Service", "Repository", "Model", "DTO", "单元测试", "*"],
+        "quality_checks": ["代码规范", "测试覆盖", "性能基准", "*"]
+      },
+      "note": ".NET8 WebAPI完整骨架代码，包含SqlSugar ORM实体、业务逻辑层、数据访问层和单元测试"
+    },
+    {
+      "id": "ai_saas-skeleton-model-v1",
+      "business": "ai_saas",
+      "template_type": "代码骨架",
+      "module_name": "模型服务系统",
+      "input_description": "AI模型管理服务（模型上传版本控制、推理服务部署、权限管理、使用统计）",
+      "interface_params": "模型元数据规范、API端点设计、权限控制规则",
+      "output_path": "/ai_saas/backend/skeleton/",
+      "validation_rules": {
+        "required_components": ["API控制器", "模型服务", "文件处理", "权限验证", "监控统计", "*"],
+        "quality_checks": ["安全验证", "错误处理", "日志记录", "*"]
+      },
+      "note": "支持多模型版本的AI服务骨架，包含文件上传处理、模型推理服务和使用统计功能"
+    },
+    {
+      "id": "tools_platform-implementation-components-v1",
+      "business": "tools_platform",
+      "template_type": "功能实现",
+      "module_name": "工具组件库",
+      "input_description": "可复用工具组件集合（数据表格、表单生成器、图表组件、文件上传）",
+      "interface_params": "组件Props定义、事件回调、样式定制",
+      "output_path": "/tools_platform/frontend/implementation/",
+      "validation_rules": {
+        "required_features": ["完整CRUD", "单元测试", "TypeScript类型", "响应式设计", "*"],
+        "quality_checks": ["组件测试", "性能优化", "浏览器兼容", "*"]
+      },
+      "note": "基于Vue3+NaiveUI的高质量前端组件，包含完整文档、测试用例和演示示例"
+    },
+    {
+      "id": "all-docs-template-v1",
+      "business": "all",
+      "template_type": "文档生成",
+      "module_name": "项目文档模板",
+      "input_description": "标准化项目文档模板（API文档、部署指南、开发规范、测试说明）",
+      "interface_params": "文档结构规范、代码示例要求、配置说明",
+      "output_path": "/docs/templates/",
+      "validation_rules": {
+        "required_sections": ["功能说明", "快速开始", "API文档", "部署配置", "故障排查", "*"],
+        "quality_checks": ["内容准确", "结构清晰", "示例正确", "*"]
+      },
+      "note": "生成标准化项目文档模板，支持多环境部署说明和完整的开发指南"
+    }
+  ],
+  "banned_technologies": {
+    "frontend": ["Vuex", "jQuery", "Bootstrap", "Element UI", "Vuetify", "@vue/composition-api"],
+    "backend": ["EntityFramework", "Dapper", "NHibernate", "ADO.NET raw"]
+  },
+  "dependency_constraints": {
+    "max_file_size": 500,
+    "max_complexity": 10,
+    "allowed_dependencies": {
+      "frontend": ["vue", "naive-ui", "pinia", "axios", "vue-router"],
+      "backend": ["SqlSugar", "JWT", "Serilog", "Swagger", "FluentValidation"]
+    }
+  },
+  "meta": {
+    "extensible_marker": "*",
+    "extensible_fields": [
+      "technical_stack.frontend",
+      "technical_stack.backend",
+      "technical_stack.database",
+      "technical_stack.containerization",
+      "quality_standards.security_requirements",
+      "prompts[].validation_rules.required_sections",
+      "prompts[].validation_rules.required_components",
+      "prompts[].validation_rules.required_features",
+      "prompts[].validation_rules.quality_checks"
+    ],
+    "notes": "以上数组末尾的 * 表示可扩充：可在保持语义一致的前提下继续追加项；约束性清单（如 allowed_dependencies / banned_technologies）不使用 *，以免弱化约束。"
+  }
+}
